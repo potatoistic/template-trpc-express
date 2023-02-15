@@ -12,7 +12,7 @@ export const createContext = ({ req, res }: CreateExpressContextOptions) => {
 export type Context = inferAsyncReturnType<typeof createContext>
 const t = initTRPC.context<Context>().create({
   transformer: superjson,
-  errorFormatter({ shape }) {
+  errorFormatter ({ shape }) {
     return shape
   }
 })
