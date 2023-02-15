@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import superjson from 'superjson'
 import { type inferAsyncReturnType, initTRPC } from '@trpc/server'
 import { type CreateExpressContextOptions } from '@trpc/server/adapters/express'
 
@@ -10,10 +10,15 @@ export const createContext = ({ req, res }: CreateExpressContextOptions) => {
   }
 }
 export type Context = inferAsyncReturnType<typeof createContext>
-const t = initTRPC.context<Context>().create()
+const t = initTRPC.context<Context>().create({
+  transformer: superjson,
+  errorFormatter({ shape }) {
+    return shape
+  }
+})
 
-const router = t.router
-const publicProcedure = t.procedure
+export const router = t.router
+export const publicProcedure = t.procedure
 
 const helloRouter = router({
   greeting: publicProcedure.query(({ ctx }) => {
