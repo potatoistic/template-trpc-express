@@ -4,7 +4,8 @@ import { createExpressMiddleware } from '@trpc/server/adapters/express'
 import cors from 'cors'
 import helmet from 'helmet'
 
-import { appRouter, createContext } from './lib/trpc'
+import { createContext } from './lib/trpc'
+import { rootRouter, type RootRouter } from './router'
 
 const app = express()
 
@@ -15,6 +16,6 @@ app.use(cors())
 app.use(helmet())
 
 app.get('/', (req, res) => res.send({ message: 'Hello World from TRPC' }))
-app.use('/trpc', createExpressMiddleware({ router: appRouter, createContext }))
+app.use('/trpc', createExpressMiddleware({ router: rootRouter, createContext }))
 
-export { app }
+export { app, type RootRouter }
