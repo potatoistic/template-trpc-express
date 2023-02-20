@@ -19,18 +19,15 @@ const parsed = server.safeParse(processEnv)
 if (!parsed.success) {
   console.error(
     '❌ Invalid environment variables:',
-    parsed.error.flatten().fieldErrors
+    JSON.stringify(parsed.error.flatten().fieldErrors, null, 2)
   )
   throw new Error('Invalid environment variables')
 }
 
-const env = new Proxy(parsed.data, {
+export const environment = new Proxy(parsed.data, {
   get(target, prop) {
     if (typeof prop !== 'string') return undefined
 
     return target[prop as keyof typeof target]
   }
 })
-
-export const environment =
-  process.env.SKIP_VALIDATION === 'true' ? process.env : env

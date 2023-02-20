@@ -1,12 +1,17 @@
+# Packages
 node_modules
 
+# Build
 dist
-
+build
+.cache
 .eslintcache
 
+# Environment Files
 .env
 .env.*
 *.env
 *.env.*
 
+# WireIt
 .wireit
